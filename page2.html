@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, p {
+            text-align: center;
+        }
+
+        /* Grid layout for seats */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr); /* 10 seats per row */
+            gap: 5px;
+            margin: 20px 0;
+        }
+
+        /* Seat styling */
+        .seat {
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.2s ease;
+            position: relative;
+            font-size: 14px;
+        }
+
+        .seat::before {
+            content: "🎫";
+            font-size: 16px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .seat.available {
+            background-color: #d1d5db;
+        }
+
+        .seat.selected {
+            background-color: #60a5fa;
+            color: #fff;
+        }
+
+        .seat.occupied {
+            background-color: #4b5563;
+            color: #fff;
+            cursor: not-allowed;
+        }
+
+        .seat span {
+            font-size: 10px;
+            display: block;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #c2bbac;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .ticket {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        /* Mobile View: Reduce the seat size */
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: repeat(10, 1fr); /* Keep the same number of seats per row */
+            }
+
+            .seat {
+                padding: 5px; /* Reduce the seat size */
+                font-size: 10px;
+            }
+
+            .seat::before {
+                font-size: 12px; /* Reduce the ticket icon size */
+                margin-bottom: 2px;
+            }
+
+            .seat span {
+                font-size: 8px; /* Reduce the seat number text size */
+            }
+
+            button {
+                font-size: 14px; /* Slightly smaller button text on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="container"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const app = document.getElementById("app");
+
+            let selectedSeats = [];
+            let bookingConfirmed = false;
+
+            const movieDetails = {
+                title: "MOVIE NAME ?",
+                date: "August 30, 2024",
+                time: "7:00 PM",
+                theater: "Cineplex Odeon"
+            };
+
+            const rows = 8;
+            const seatsPerRow = 10;
+
+            const generateSeats = () => {
+                const seats = [];
+                for (let i = 0; i < rows; i++) {
+                    for (let j = 0; j < seatsPerRow; j++) {
+                        seats.push({
+                            id: `${String.fromCharCode(65 + i)}${j + 1}`,
+                            status: Math.random() > 0.2 ? "available" : "occupied"
+                        });
+                    }
+                }
+                return seats;
+            };
+
+            let seats = generateSeats();
+
+            const handleSeatClick = (seatId) => {
+                seats = seats.map(seat =>
+                    seat.id === seatId && seat.status === "available"
+                        ? { ...seat, status: seat.status === "selected" ? "available" : "selected" }
+                        : seat
+                );
+                selectedSeats = seats.filter(seat => seat.status === "selected").map(seat => seat.id);
+                render();
+            };
+
+            const handleBooking = () => {
+                if (selectedSeats.length > 0) {
+                    bookingConfirmed = true;
+                    renderTicketPreview();
+                } else {
+                    alert('Please select at least one seat.');
+                }
+            };
+
+            const renderTicketPreview = () => {
+                const ticketPreview = document.createElement('div');
+                ticketPreview.classList.add('ticket');
+                ticketPreview.innerHTML = `
+                    <h2>Booking Confirmation</h2>
+                    <p>Seats: ${selectedSeats.join(', ')}</p>
+                    <p>Movie: ${movieDetails.title}</p>
+                    <p>Date: ${movieDetails.date}</p>
+                    <p>Time: ${movieDetails.time}</p>
+                    <button onclick="handlePayment()">Proceed to Payment</button>
+                `;
+                app.appendChild(ticketPreview);
+                ticketPreview.style.display = 'block';
+            };
+
+            const handlePayment = () => {
+                window.location.href = "./page3.html";  // Replace with the correct URL
+            };
+
+            const render = () => {
+                app.innerHTML = `
+                    <div class="container">
+                        <h1>${movieDetails.title}</h1>
+                        <p>${movieDetails.date} | ${movieDetails.time} | ${movieDetails.theater}</p>
+                        <div class="grid">
+                            ${seats.map(seat => `
+                                <div class="seat ${seat.status}" onclick="handleSeatClick('${seat.id}')">
+                                    <span>${seat.id}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button onclick="handleBooking()" ${selectedSeats.length === 0 ? 'disabled' : ''}>Confirm Seats</button>
+                    </div>
+                `;
+            };
+
+            window.handleSeatClick = handleSeatClick;
+            window.handleBooking = handleBooking;
+            window.handlePayment = handlePayment;
+
+            render();
+        });
+    </script>
+</body>
+</html>

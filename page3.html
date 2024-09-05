@@ -1,0 +1,347 @@
+<header>
+    <h1>Share Your Contact Details</h1>
+</header>
+<div class="container">
+    <div class="left-section">
+        <section class="content-details">
+            <h2>Share Your Contact Details</h2>
+            <form id="contact-form">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </form>
+        </section>
+        
+        <section class="apply-promo">
+            <h2>Unlock Offers or Apply Promo Code</h2>
+            <input type="text" id="promo-code" placeholder="Enter promo code">
+            <button id="apply-promo">Apply</button>
+        </section>
+        
+        <section class="payment-section">
+            <div class="payment-left">
+                <h2>Payment Methods</h2>
+                <label>
+                    <input type="radio" name="payment-method" value="quikpay" required>
+                    Quik Pay (UPI)
+                </label>
+                <label>
+                    <input type="radio" name="payment-method" value="card">
+                    Debit/Credit Card
+                </label>
+                <label>
+                    <input type="radio" name="payment-method" value="netbanking">
+                    Net Banking
+                </label>
+                <label>
+                    <input type="radio" name="payment-method" value="wallets">
+                    Mobile Wallets (Paytm, PhonePe, Google Pay)
+                </label>
+                <label>
+                    <input type="radio" name="payment-method" value="voucher">
+                    Gift Voucher
+                </label>
+                <label>
+                    <input type="radio" name="payment-method" value="redeem-points">
+                    Redeem Points
+                </label>
+            </div>
+
+            <div class="payment-right">
+                <!-- Content dynamically shown based on payment method -->
+            </div>
+        </section>
+    </div>
+    
+    <div class="right-section">
+        <section class="order-summary">
+            <h2>Order Summary</h2>
+            <div class="order-details">
+                <h3>Movie Title: Movie Title</h3>
+                <p>Date: August 30, 2024</p>
+                <p>Theater: Cinema Hall A</p>
+                <p>Tickets: 2</p>
+                <p>Ticket Price: $10.00</p>
+                <p>Convenience Fees: $1.00</p>
+                <p>Taxes: $0.50</p>
+            </div>
+
+            <div class="contribution">
+                <p>Contribution to BookASmile:</p>
+                <button id="add-contribution">Add Rs. 2</button>
+            </div>
+            
+            <div class="total-amount">
+                <p>Total Amount Payable: <span id="total-amount">$11.50</span></p>
+            </div>
+            
+            <div class="ip-address">
+                <p>Your IP Address: <span id="ip-address">Loading...</span></p>
+            </div>
+        </section>
+        
+        <button id="confirm-booking">Confirm Booking</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+<style>
+    /* Overall Body Styling */
+    body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #c5c0b4; /* Light background */
+        color: #333; /* Dark text color for better readability */
+    }
+
+    /* Header Styling */
+    header {
+        background-color: #c2bbac; /* Teal background */
+        color: #ffffff;
+        padding: 15px;
+        text-align: center;
+    }
+
+    /* Container Styling */
+    .container {
+        display: flex;
+        justify-content: space-between;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #ffffff; /* White background for content area */
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        max-width: 1200px; /* Limit max width for better layout control */
+    }
+
+    /* Left Section Styling */
+    .left-section {
+        flex: 1;
+        padding-right: 20px;
+    }
+
+    /* Right Section Styling */
+    .right-section {
+        flex: 1;
+        padding-left: 20px;
+    }
+
+    /* General Section Styling */
+    section {
+        margin-bottom: 30px;
+    }
+
+    /* Labels and Input Fields */
+    label {
+        font-weight: 500;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    input[type="email"],
+    input[type="tel"],
+    input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        margin: 5px 0;
+        border: 1px solid #b0bec5; /* Light gray border */
+        border-radius: 5px;
+        font-size: 1em;
+    }
+
+    /* Buttons */
+    button {
+        padding: 12px 20px;
+        background-color: #c2bbac; /* Teal button color */
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        font-size: 1em;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #c2bbac; /* Darker teal on hover */
+    }
+
+    /* Payment Section */
+    .payment-section {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .payment-left {
+        flex: 1;
+        margin-right: 20px;
+    }
+
+    .payment-right {
+        flex: 2;
+        border-left: 1px solid #b0bec5; /* Light gray border */
+        padding-left: 20px;
+    }
+
+    /* Order Summary */
+    .order-summary {
+        background-color: #ffffff; /* White background for summary */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .order-details p,
+    .contribution p {
+        margin: 10px 0;
+    }
+
+    .contribution button {
+        background-color: #c2bbac; /* Darker teal for contribution button */
+    }
+
+    .contribution button:hover {
+        background-color: #c2bbac; /* Even darker teal on hover */
+    }
+
+    /* Total Amount Styling */
+    .total-amount span {
+        font-weight: bold;
+        color: #d32f2f; /* Red for total amount */
+    }
+
+    /* IP Address Section */
+    .ip-address {
+        margin-top: 15px;
+    }
+
+    /* Confirm Booking Button */
+    #confirm-booking {
+        width: 100%;
+        background-color: #c2bbac; /* Teal button color */
+        color: #eae4dd;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.2em;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    #confirm-booking:hover {
+        background-color: #b8ae97; /* Darker teal on hover */
+    }
+
+    /* Mobile View Adjustments */
+    @media (max-width: 768px) {
+        /* Adjust container to stack sections vertically */
+        .container {
+            flex-direction: column;
+            padding: 10px;
+            max-width: 100%;
+        }
+
+        /* Left and Right sections should take up full width */
+        .left-section,
+        .right-section {
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        /* Reduce padding and font size for mobile input fields */
+        input[type="email"],
+        input[type="tel"],
+        input[type="text"] {
+            padding: 8px;
+            font-size: 0.9em;
+        }
+
+        /* Adjust button padding for smaller screens */
+        button {
+            padding: 10px 15px;
+            font-size: 0.9em;
+        }
+
+        /* Payment Section in Mobile View */
+        .payment-section {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Show payment method details based on selected option
+    document.querySelectorAll('input[name="payment-method"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const paymentRight = document.querySelector('.payment-right');
+            paymentRight.innerHTML = ''; // Clear previous content
+
+            switch (this.value) {
+                case 'quikpay':
+                    paymentRight.innerHTML = `
+                        <p>Your UPI ID: <input type="text" id="upi-id" name="upi-id" placeholder="Enter your UPI ID"></p>
+                    `;
+                    break;
+                case 'card':
+                    paymentRight.innerHTML = `
+                        <label for="card-number">Card Number:</label>
+                        <input type="text" id="card-number" name="card-number" required>
+                        
+                        <label for="card-expiry">Expiry Date:</label>
+                        <input type="text" id="card-expiry" name="card-expiry" required>
+                        
+                        <label for="card-cvv">CVV:</label>
+                        <input type="text" id="card-cvv" name="card-cvv" required>
+                    `;
+                    break;
+                case 'netbanking':
+                    paymentRight.innerHTML = `
+                        <p>Select your Bank:
+                            <select name="bank" id="bank">
+                                <option value="bank1">Bank 1</option>
+                                <option value="bank2">Bank 2</option>
+                            </select>
+                        </p>
+                    `;
+                    break;
+                case 'wallets':
+                    paymentRight.innerHTML = `
+                        <p>Select Mobile Wallet:
+                            <select name="wallet" id="wallet">
+                                <option value="paytm">Paytm</option>
+                                <option value="phonepe">PhonePe</option>
+                                <option value="gpay">Google Pay</option>
+                            </select>
+                        </p>
+                    `;
+                    break;
+                case 'voucher':
+                    paymentRight.innerHTML = `
+                        <p>Enter Gift Voucher Code: <input type="text" id="voucher-code" name="voucher-code"></p>
+                    `;
+                    break;
+                case 'redeem-points':
+                    paymentRight.innerHTML = `
+                        <p>Redeem your points here. Total Points: 1200</p>
+                    `;
+                    break;
+            }
+        });
+    });
+
+    // Fetch IP address
+    fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('ip-address').textContent = data.ip;
+        });
+
+    // Handle booking confirmation
+    document.getElementById('confirm-booking').addEventListener('click', () => {
+        alert('Booking Confirmed! Thank you.');
+    });
+});
+</script>
